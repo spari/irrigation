@@ -27,7 +27,7 @@ int Controller::comp_duration(int duration_override)
    int duration;
    float amb_temp = sensors.get_temp();
 
-   if (duration_override > 0 && duration_override < conf->max_duration) {
+   if (duration_override > 0 && duration_override <= conf->max_duration) {
       duration = duration_override;
    }
    else if (amb_temp < conf->min_temp) {

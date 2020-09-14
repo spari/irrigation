@@ -4,7 +4,7 @@
 
 #include "local.h"
 
-#define LOCAL_MQTT
+//#define LOCAL_MQTT
 
 struct Config config;
 int Timer1SecId;
@@ -72,11 +72,11 @@ void loop()
 
    time_t ctime = now();
 
-   // Alarm.delay() must be called at least for TimeAlarms to be enabled. 
+   // Must be called at least once in loop() for TimeAlarms to be enabled.
    Alarm.delay(1);
 
    if (check_hour(hour(ctime)) && minute(ctime) == 0 && second(ctime) < 30) {
-      controller.irrigate();               
+      controller.irrigate();
    }
    signaller.ok();
 }

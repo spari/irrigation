@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="styles.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
+      <script src="main.js"></script>
+      <title>ConfigManager</title>
+   </head>
+   <body>
+      <div class="container">
+      <h1 style="text-align: center;">Irrigation Controller</h1>
+      <h4 style="text-align: center;">Version 2.0</h4>
+      <ul>
+         <li>Settings for configuring the microcontroller.</li>
+         <li>For temporary changes (for instance to irrigate just one time for 30 seconds) use an MQTT app.</li>
+      </ul>
+
+      <form method="post" action="/settings">
+         <h2>Controller Settings</h2>
+         <div class="section-group">
+            <div class="field-group">
+               <label>Watering Hours</label>
+               <input name="controller.watering_hours" type="text" size="8" data-type="number" value=174760 min=0 max=16777215>
+               <ul>
+                  <li>Watering hours is specified in a 24-bit binary.</li>
+                  <li>MSB = 00:00h, LSB = 23:00h.</li>
+                  <li>0 = Valve On, 1 = Valve Off.</li>
+                  <li>Example: to irrigate every alternate hour between 6am and
+                    8pm, set to 000000101010101010101000 binary = 174760
+                    decimal.</li>
+               </ul>
+            </div>
+            <div class="field-group">
+               <label>Min Watering Time (seconds)</label>
+               <input name="controller.min_duration" type="text" size="3" data-type="number" value=45 min=30 max=120>
+               <ul>
+                  <li>Minimal watering required to prevent salt deposit from
+              clogging the irrigation holes.</li>
+                  <li>Default: 45</li>
+               </ul>
+             </div>
+             <div class="field-group">
+                <label>Max Watering Time (seconds)</label>
+                <input name="controller.max_duration" type="text" size="3" data-type="number" value=300 min=60 max=420>
+                <ul>
+                   <li>Maximum watering time limited to prevent solenoid valve from overheating.</li> 
+                   <li>Default: 300</li>
+                </ul>
+             </div>
+             <div class="field-group">
+                <label>Min Temperature (&#176;C)</label>
+                <input name="controller.min_temp" type="text" size="2" data-type="number" value=28 min=20 max=32>
+                <ul>
+                   <li>Default: 28 
+                </ul>
+             </div>
+             <div class="field-group">
+                <label>Max Temperature (&#176;C)</label>
+                <input name="controller.max_temp" type="text" size="2" data-type="number" value=45 min=32 max=50>
+                <ul>
+                   <li>Default: 45 
+                </ul>
+             </div>
+             <ul>
+                <li>If ambient temp goes below min temp, watering time is clamped at min
+                 watering time.</li>
+                <li>If ambient temp goes above max temp, watering time is clamped at max 
+                 water time.</li>
+                <li>If ambient temp is between min and max, watering time is linear.</li>
+             </ul>
+         </div>
+
+         <h2>Time Settings</h2>
+         <div class="section-group">
+            <div class="field-group">
+               <label>Time Zone</label>
+               <input name="time.timezone" type="text" size="15" data-type="text" value="UTC-05:30">
+               <ul>
+                  <li>Default: UTC-05:30</li>
+               </ul>
+            </div>
+            <div class="field-group">
+               <label>Daylight Savings</label>
+               <input name="time.daylight_savings" type="text" size="2" data-type="number" value="0" min="0" max="1">
+               <ul>
+                  <li>Values: 0=disable, 1=enable</li>
+                  <li>Default: 0</li>
+               </ul>
+            </div>
+            <div class="field-group">
+               <label>NTP Server</label>
+               <input name="time.ntp_server" type="text" size="40" data-type="text" value="pool.ntp.org">
+               <ul>
+                  <li>Default: pool.ntp.org</li>
+               </ul>
+            </div>
+         </div>
+
+         <h2>MQTT Settings</h2>
+         <div class="section-group">
+            <div class="field-group">
+               <label>MQTT Server</label>
+               <input name="mqtt.server" type="text" size="40" data-type="text" value="192.168.2.1">
+               <ul>
+                  <li>Default: 192.168.2.1</li> 
+               </ul>
+            </div>
+            <div class="field-group">
+                <label>MQTT Port</label>
+                <input name="mqtt.port" type="text" size="5" data-type="number" value="1883" min="0" max="65,536">
+                <ul>
+                  <li>Default: 1883</li>
+                </ul>
+            </div>
+            <div class="field-group">
+               <label>MQTT Username</label>
+               <input name="mqtt.username" type="text" size="15" data-type="text">
+            </div>
+            <div class="field-group">
+               <label>MQTT Password</label>
+               <input name="mqtt.password" type="text" size="15" data-type="text">
+            </div>
+            <div class="field-group">
+               <label>MQTT Client ID</label>
+               <input name="mqtt.client_id" type="text" size="25"
+               data-type="text" value="irrigation-mcu1">
+               <ul>
+                 <li>Default: irrigation-mcu1</li>
+               </ul>
+            </div>
+            <div class="field-group">
+               <label>MQTT Base Topic</label>
+               <input name="mqtt.base_topic" type="text" size="80" data-type="text" value="/home-iot/irrigation-mcu1">
+               <ul>
+                 <li>MQTT providers might give you a specific base topic.</li>
+                 <li>The app uses the base topic + built-in subtopics to build fully qualified topics.</li> 
+                 <li>Default: /home-iot/irrigation-mcu1</li>
+               </ul>
+            </div>
+            <div class="field-group">
+              <label>MQTT Log Subtopic</label>
+              <input name="mqtt.log_topic" type="text" size="15" data-type="text" value="/log">
+              <ul>
+                <li>Log messages are sent to this subtopic.</li>
+                <li>Default: /log</li>
+              </ul>
+            </div>
+         </div>
+
+         <div class="button-container">
+            <h2 style="" id="status"></h2>
+            <button type="submit">Save</button>
+         </div>
+         <p>
+            Upon save, controller will restart and initialize with the new configuration.
+         </p>
+
+         <h2>MQTT App Topics</h2>
+         <div class="section-group">
+            These are for use in any MQTT client/app (such as an Android MQTT app for remote control
+            via cellphone).<br/>
+            <br/>
+            Publish/Command Topics:
+            <ul>
+               <li><b>/home-iot/irrigation-mcu1/irrigate secs</b> - irrigate for specified seconds.</li>
+               <li><b>/home-iot/irrigation-mcu1/temp</b> - returns ambient temperature.</li>
+               <li><b>/home-iot/irrigation-mcu1/restart</b> - restarts the controller.</li>
+               <li><b>/home-iot/irrigation-mcu1/sysinfo</b> - returns system information.</li>
+            </ul>
+            Subscribe/Result Topics:
+            <ul>
+               <li><b>/home-iot/irrigation-mcu1/result/temp</b></li>
+               <li><b>/home-iot/irrigation-mcu1/log</b></li>
+            </ul>
+         </div>
+      </form>
+   </div>
+</body>
+</html>
+

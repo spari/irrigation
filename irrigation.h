@@ -16,21 +16,12 @@
 #include <ota_utils.h>
 #include <mqtt_utils.h>
 
+#include "config_manager.h"
 #include "sensors.h"
 #include "valve.h"
 #include "controller.h"
 
-const char* CODE_VERSION = "1.0";
-
-/*
- * See each struct definition for respective default values.
- */
-struct Config {
-   struct wifi_conf wifi;
-   struct time_conf time;
-   struct mqtt_conf mqtt;
-   struct controller_conf controller;
-};
+const char* CODE_VERSION = "2.0";
 
 /*
  * Pin assignments.

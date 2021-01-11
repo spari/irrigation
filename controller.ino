@@ -56,8 +56,6 @@ int Controller::comp_duration(int duration_override)
 
 void Controller::irrigate(int duration_override)
 {
-   extern int Timer1SecId;
-
    if (valve.is_open()) {
       log_info("Irrigation already started.");
       return;
@@ -71,19 +69,11 @@ void Controller::irrigate(int duration_override)
    sprintf(result_topic, "%s%s", TOPIC_RESULT, TOPIC_DURATION);
    mqtt_utils.publish(result_topic, String(new_duration).c_str());
 
+   valve.open();
    /*
-      This is a critical section. Disable/Enable alarms so it is not interrupted. 
-      For example, if after valve is opened, and say MQTT loses connection, then
-      timer1sec_callback() will retry mqtt connection (each retry lasts approx.
-      5 sec) which can cause significant delay to valve closing.
+      signaller() serves dual purpose of indicating irrigation is taking
+      place via LED, as well as blocking for the given watering duration.
    */
-   Alarm.disable(Timer1SecId);
-      valve.open();
-      /*
-         signaller() serves dual purpose of indicating irrigation is taking
-         place via LED, as well as blocking for the given watering duration.
-      */
-      signaller.notify(new_duration);
-      valve.close();
-   Alarm.enable(Timer1SecId);
+   signaller.notify(new_duration);
+   valve.close();
 }

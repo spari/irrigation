@@ -22,8 +22,8 @@ Upload the sketch's data directory to the SIFFS via:
 
 ### Upload Sketch
 Before uploading the sketch set the following in the Arduino IDE:
-    Arduino IDE --> Tools --> Board --> NodeMCU 1.0 (ESP-12E Module)
-    Arduino IDE --> Tools --> Flash Size --> 4MB (FS:2MB  OTA:1MB)
-    Arduino IDE --> Tools --> Erase Flash --> Only Sketch
-    Arduino IDE --> Tools --> Port --> Set accordingly
+* Arduino IDE --> Tools --> Board --> NodeMCU 1.0 (ESP-12E Module)
+* Arduino IDE --> Tools --> Flash Size --> 4MB (FS:2MB  OTA:1MB)
+* Arduino IDE --> Tools --> Erase Flash --> Only Sketch
+* Arduino IDE --> Tools --> Port --> Set accordingly
 

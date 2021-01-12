@@ -12,10 +12,10 @@ struct Metadata {
    int8_t version;
 } meta;
 
-const char* APName = "{ap_name}"; //scrubbed
-const char* APPassword = "{ap_password}"; //scrubbed
-const char* APIUsername = "{api_username}"; //scrubbed
-const char* APIPassword = "{api_password}"; //scrubbed
+const char* APName = "irrigation"; //scrubbed
+const char* APPassword = "iot4home"; //scrubbed
+const char* APIUsername = "mcuadmin"; //scrubbed
+const char* APIPassword = "iot4mcu"; //scrubbed
 
 void APCallback(WebServer *server) {
    server->on("/styles.css", HTTPMethod::HTTP_GET, [server](){

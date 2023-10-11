@@ -16,7 +16,8 @@ struct controller_conf {
     * 16, 18, 20":
     *    watering_hours = 0b000000101010111110101000;
     */
-   long watering_hours = 0b000000101010111110101000;
+   char watering_hours_str[25] = "000000101010111110101000";
+   int watering_hours = 0b000000101010111110101000;
 
    /* 
     * Watering duration is based on ambient temperature.

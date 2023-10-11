@@ -74,6 +74,7 @@ void print_sysinfo()
    log_info("min-duration:       %4ds", config.controller.min_duration);
    log_info("max-duration:       %4ds", config.controller.max_duration);;
    log_info("curr-duration:      %4ds", controller.comp_duration());
+   log_info("watering_hours:    %s", config.controller.watering_hours_str);
    log_info("uptime:            %s", time_utils.uptime_str().c_str());
 
    log_debug("flash-size:        %4dKB", ESP.getFlashChipRealSize()/1024);

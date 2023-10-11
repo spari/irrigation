@@ -20,8 +20,9 @@
 #include "sensors.h"
 #include "valve.h"
 #include "controller.h"
+#include "ap_switch.h"
 
-const char* CODE_VERSION = "2.0";
+const char *CODE_VERSION = "2.1";
 
 /*
  * Pin assignments.
@@ -34,10 +35,14 @@ struct sensors_gpio Sensors::gpio = {
    .temp_sensor = A0
 };
 
+struct ap_switch_gpio ApSwitch::gpio = {
+   .ap_button = D7,
+};
+
 struct signaller_gpio Signaller::gpio = {
-   .sysok_led = BUILTIN_LED,
-   .status_led = D6,
-   .buzzer = D3
+   .sysok_led = D3,
+   .status_led = D4,
+   .buzzer = D5
 };
 
 Signaller signaller;
@@ -48,6 +53,7 @@ WifiUtils wifi_utils;
 
 Sensors sensors;
 Valve valve;
+ApSwitch ap_switch;
 Controller controller;
 
 #endif

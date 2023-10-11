@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include <ConfigManager.h>
 
 const char *settingsHTML = (char *)"/settings.html";
@@ -51,8 +53,9 @@ void APICallback(WebServer *server) {
    been saved. Sets the config.configured flag to true and restarts the 
    board. See comments in setup().
 */
-void SavedCallback()
+void config_saved_callback()
 {
+   config.controller.watering_hours = std::stoi(config.controller.watering_hours_str, 0, 2);
    config.configured = true;
    configManager.save();
 
@@ -68,8 +71,8 @@ void init_config_manager()
    meta.version = 3;
 
    // Setup config manager
-   configManager.setWifiConnectRetries(100);
-   configManager.setWifiConnectInterval(500);
+   configManager.setWifiConnectRetries(8000000);
+   configManager.setWifiConnectInterval(1000);
    configManager.setAPName(APName);
    configManager.setAPPassword(APPassword);
    configManager.setAPFilename("/index.html");
@@ -78,7 +81,7 @@ void init_config_manager()
       Settings variables
    */
    // Controller
-   AddField(controller.watering_hours);
+   AddFieldStr(controller.watering_hours_str);
    AddField(controller.min_duration);
    AddField(controller.max_duration);
    AddField(controller.min_temp);
@@ -107,7 +110,8 @@ void init_config_manager()
    // Init Callbacks
    configManager.setAPCallback(APCallback);
    configManager.setAPICallback(APICallback);
-   configManager.setSavedCallback(SavedCallback);
+   configManager.setConfigSavedCallback(config_saved_callback);
+   configManager.setWifiRetryCallback(wifi_retry_callback);
 
    configManager.begin(config);
 }

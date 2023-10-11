@@ -21,7 +21,7 @@ struct Config {
 
    /*
     * Note: ConfigManager assigns a default value of -1 for int types, 
-    * overriding default value of 0. 
+    * overriding default value of 0.
     * 
     * This happens when ConfigManager initializes the config params from 
     * SPIFFS when it has not been stored before. So it can have value 
@@ -31,7 +31,7 @@ struct Config {
     * To prevent such coercing and consequent wrong evaluation, do an 
     * an explicit comparison: "if (configured == true)" or 
     * "if (configured != true)", and keep 'configured' as an int type, so 
-    * that this is an int comparision, not a boolean comparison. 
+    * that this is an int comparision, not a boolean comparison.
     */
    int configured = false;
 };
